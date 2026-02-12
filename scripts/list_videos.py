@@ -73,19 +73,19 @@ def main():
         epilog="""
 Examples:
   # List all tasks
-  python list_tasks.py
+  python list_videos.py
 
   # Filter by status
-  python list_tasks.py --status succeeded
+  python list_videos.py --status succeeded
 
   # Filter by model
-  python list_tasks.py --model doubao-seedance-1-5-pro-251215
+  python list_videos.py --model seedance-1-5-pro-251215
 
   # Pagination
-  python list_tasks.py --page-num 2 --page-size 20
+  python list_videos.py --page-num 2 --page-size 20
 
   # Filter by specific task IDs
-  python list_tasks.py --task-ids task1,task2,task3
+  python list_videos.py --task-ids task1,task2,task3
         """
     )
 

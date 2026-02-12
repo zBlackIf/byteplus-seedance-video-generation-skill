@@ -19,7 +19,7 @@ try:
 except ImportError as e:
     raise ImportError(
         f"Missing required dependency: {e.name}. "
-        "Install with: pip install -r requirements.txt"
+        "Install with: pip install requests python-dotenv"
     )
 
 
@@ -302,7 +302,6 @@ class SeedanceClient:
         endpoint = "/contents/generations/tasks"
 
         # Models that do NOT support service_tier parameter
-        # According to documentation, these models require service_tier to be empty/omitted
         models_without_service_tier = [
             "seedance-2-0-260128",
             "seedance-2-0",

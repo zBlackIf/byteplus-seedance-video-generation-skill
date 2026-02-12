@@ -22,7 +22,6 @@ try:
         TimeoutError
     )
 except ImportError:
-    # Add current directory to path
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from seedance_client import (
         SeedanceClient,
@@ -53,7 +52,6 @@ def read_image_file(file_path: str) -> str:
     # Get MIME type
     mime_type, _ = mimetypes.guess_type(file_path)
     if mime_type is None:
-        # Default to image/jpeg
         mime_type = "image/jpeg"
 
     # Check file size (30MB limit)
@@ -143,8 +141,8 @@ def get_output_dir(output_dir: Optional[str]) -> Path:
     if output_dir:
         path = Path(output_dir)
     else:
-        # Default use output folder in project root
-        path = Path(__file__).parent.parent / "output"
+        # Default use output folder in current directory
+        path = Path.cwd() / "output"
 
     # Create directory
     path.mkdir(parents=True, exist_ok=True)
@@ -166,9 +164,7 @@ def generate_filename(task_id: str, prompt: Optional[str] = None) -> str:
     task_suffix = task_id.split("-")[-1]
 
     if prompt:
-        # Use first few characters of prompt as filename
         import re
-        # Remove special characters, keep only alphanumeric, underscore, and hyphen
         clean_prompt = re.sub(r'[^\w-]', '_', prompt[:20])
         return f"{clean_prompt}_{task_suffix}.mp4"
 
@@ -190,7 +186,7 @@ def download_video(url: str, output_path: Path):
         import requests
         tqdm = None
 
-    print(f"\n📥 Downloading video to: {output_path}")
+    print(f"\nDownloading video to: {output_path}")
 
     response = requests.get(url, stream=True)
     response.raise_for_status()
@@ -220,15 +216,15 @@ def download_video(url: str, output_path: Path):
             print()
 
     file_size_mb = output_path.stat().st_size / 1024 / 1024
-    print(f"✅ Video saved: {output_path} ({file_size_mb:.2f} MB)")
+    print(f"Video saved: {output_path} ({file_size_mb:.2f} MB)")
 
 
 def poll_callback(task):
     """Poll callback function"""
     if task.status == TaskStatus.RUNNING:
-        print(f"\r🔄 Running... (Task: {task.id[:8]}...)", end="", flush=True)
+        print(f"\rRunning... (Task: {task.id.id[:8]}...)", end="", flush=True)
     elif task.status == TaskStatus.QUEUED:
-        print(f"\r⏳ Queued... (Task: {task.id[:8]}...)", end="", flush=True)
+        print(f"\rQueued... (Task: {task.id[:8]}...)", end="", flush=True)
 
 
 def main():
@@ -238,26 +234,23 @@ def main():
         epilog="""
 Examples:
   # Text-to-video
-  python create_task.py --prompt "A cute kitten yawning in the sunlight"
+  python create_video.py --prompt "A cute kitten yawning in the sunlight"
 
   # Text-to-video with auto-download
-  python create_task.py --prompt "A cute kitten yawning in the sunlight" --auto-download
+  python create_video.py --prompt "A cute kitten yawning in the sunlight" --auto-download
 
   # Image-to-video
-  python create_task.py --prompt "Camera slowly zooms out" --image cat.jpg
+  python create_video.py --prompt "Camera slowly zooms out" --image cat.jpg
 
   # First and last frame
-  python create_task.py --prompt "Smooth transition" --image first.jpg --last-frame last.jpg
+  python create_video.py --prompt "Smooth transition" --image first.jpg --last-frame last.jpg
 
   # With custom parameters
-  python create_task.py \\
+  python create_video.py \\
     --prompt "Seaside sunset, cinematic feel" \\
     --resolution 1080p \\
     --ratio 21:9 \\
     --duration 8
-
-  # Draft mode with auto-download
-  python create_task.py --prompt "Test scene" --draft true --auto-download
         """
     )
 
@@ -316,7 +309,7 @@ Examples:
     )
 
     # Advanced parameters
-    parser.add_argument(
+    parser.add.add_argument(
         "--seed",
         type=int,
         help="Random seed for reproducibility"
@@ -493,7 +486,7 @@ Examples:
             }
             print(json.dumps(result, indent=2, ensure_ascii=False))
         else:
-            print("✅ Task created successfully!")
+            print("Task created successfully!")
             print(f"   Task ID: {task.id}")
             print(f"   Status: {task.status.value}")
             print(f"   Model: {task.model}")
@@ -507,7 +500,7 @@ Examples:
 
         # Watch mode
         if args.watch:
-            print(f"\n⏱ Watching task: {task.id}")
+            print(f"\nWatching task: {task.id}")
             print(f"   Poll interval: {args.poll_interval}s, Timeout: {args.timeout}s")
             print()
 
@@ -549,19 +542,19 @@ Examples:
                     output_path = output_dir / filename
                     download_video(task.video_url, output_path)
                 elif task.video_url:
-                    print(f"\n📹 Video URL: {task.video_url}")
+                    print(f"\nVideo URL: {task.video_url}")
                     print("   (URL valid for 24 hours)")
 
     except InvalidRequestError as e:
-        print(f"❌ API Error: {e}", file=sys.stderr)
+        print(f"API Error: {e}", file=sys.stderr)
         if e.response:
             print(f"   Details: {e.response}", file=sys.stderr)
         sys.exit(1)
     except TimeoutError as e:
-        print(f"\n⏰ Error: {e}", file=sys.stderr)
+        print(f"\nError: {e}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"❌ Error: {e}", file=sys.stderr)
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
 

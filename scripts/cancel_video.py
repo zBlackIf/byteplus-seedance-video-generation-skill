@@ -23,10 +23,10 @@ def main():
         epilog="""
 Examples:
   # Cancel queued task
-  python cancel_task.py <task_id>
+  python cancel_video.py <task_id>
 
   # Delete completed/failed task record
-  python cancel_task.py <task_id>
+  python cancel_video.py <task_id>
         """
     )
 
@@ -49,7 +49,7 @@ Examples:
     args = parser.parse_args()
 
     try:
-        client = SeedanceClient(api_key=args.api_key)
+        client = SeedanceClient(apiKey=args.api_key)
         result = client.cancel_task(args.task_id)
 
         if args.json:

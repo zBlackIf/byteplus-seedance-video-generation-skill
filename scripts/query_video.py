@@ -140,19 +140,19 @@ def main():
         epilog="""
 Examples:
   # Query task status
-  python query_task.py <task_id>
+  python query_video.py <task_id>
 
   # Watch task until completion
-  python query_task.py --watch <task_id>
+  python query_video.py --watch <task_id>
 
   # Watch with custom poll interval
-  python query_task.py --watch <task_id> --poll-interval 10
+  python query_video.py --watch <task_id> --poll-interval 10
 
   # Output as JSON
-  python query_task.py --json <task_id>
+  python query_video.py --json <task_id>
 
   # Download completed video
-  python query_task.py --watch <task_id> --download output.mp4
+  python query_video.py --watch <task_id> --download output.mp4
         """
     )
 
