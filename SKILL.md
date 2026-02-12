@@ -17,7 +17,6 @@ description: |
   - seedance-1-0-pro-fast-251015: Seedance 1.0 Pro Fast
   - seedance-1-0-lite-t2v-250428: Seedance 1.0 Lite (Text-to-Video)
   - seedance-1-0-lite-i2v-250428: Seedance 1.0 Lite (Image-to-Video)
-  - seedance-2-0-260128: Seedance 2.0
 ---
 
 ## Setup

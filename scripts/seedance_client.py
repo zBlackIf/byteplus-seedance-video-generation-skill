@@ -303,8 +303,8 @@ class SeedanceClient:
 
         # Models that do NOT support service_tier parameter
         models_without_service_tier = [
-            "seedance-2-0-260128",
-            "seedance-2-0",
+            "seedance-1-0-lite-t2v-250428",
+            "seedance-1-0-lite-i2v-250428",
         ]
 
         model = payload.get("model", "")
